@@ -20,6 +20,9 @@ case $_myos in
 
         # update on one command
         alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
+
+        # uninstall packages
+        alias remove='sudo apt-get --purge remove'
         ;;
     Darwin)
         # open google chrome

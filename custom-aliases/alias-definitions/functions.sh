@@ -4,15 +4,66 @@
 #                                                                                                                      #
 ########################################################################################################################
 
+
+#====================#
+#   shell/terminal   #
+#====================#
+
+# print a separator banner, as wide as the terminal
+function hr() {
+    print ${(l:COLUMNS::=:)}
+}
+
+
 #=================#
 #   conversions   #
 #=================#
 # convert string to int
-function toint {
+function toint() {
     local -i num="10#${1}"
     echo "${num}"
 }
 
+# urlencode text
+function urlencode() {
+    echo -e $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$1");
+}
+
+# create short urls via http://goo.gl using curl(1)
+function zurl() {
+    if [[ -z $1 ]];
+    then
+        print "USAGE: $0 <URL>";
+    else
+        if [ -z "$configGoogleApiKey" ];
+        then
+            echo -e 'No Google API Key defined!';
+            echo -e '';
+            echo -e 'You should set your Key in $HOME/custom-aliases/config.sh';
+            echo -e 'Otherwise it could be that the daily limit for requests is reached and you do not receive a shortened URL';
+            echo -e 'For further information take a look here: https://developers.google.com/url-shortener/v1/getting_started';
+            api="https://www.googleapis.com/urlshortener/v1/url";
+        else
+            api="https://www.googleapis.com/urlshortener/v1/url?key=$configGoogleApiKey";
+        fi
+        url=$1;
+        if [[ $1 =~ http(s|)://* ]];
+        then
+            url=$url;
+        else
+            url="http://$url";
+        fi
+        json="{\"longUrl\": \"$url\"}"
+        data=$(curl --silent -H "Content-Type: application/json" -d $json $api);
+        if [[ $data =~ '"id": "(http(s|)://goo.gl/[[:alnum:]]+)"' ]];
+        then
+            match="${match/ s/}"
+            echo -e $match;
+        else
+            echo -e $data;
+        fi
+    fi
+}
 
 #=================#
 #   web-related   #
@@ -47,6 +98,25 @@ function whoisport() {
     fi
 }
 
+# get public ip
+function myip() {
+	local api
+	case "$1" in
+		"-4")
+			api="http://v4.ipv6-test.com/api/myip.php"
+			;;
+		"-6")
+			api="http://v6.ipv6-test.com/api/myip.php"
+			;;
+		*)
+			api="http://v4v6.ipv6-test.com/api/myip.php"
+			;;
+	esac
+	curl -s "$api"
+	echo # Newline.
+}
+alias ipinfo='myip'
+
 
 #===============#
 #   databases   #
@@ -70,7 +140,7 @@ function mysql-import() {
 
 # cd into directory and list contents
 # USAGE: cls {DIRECTORYNAME}
-cls() {
+function cls() {
     if [ $# -lt 1 ];
     then
         echo 'USAGE: cls {DIRECTORYNAME}';
@@ -82,7 +152,7 @@ cls() {
 
 # cd into directory and list contents (detailed
 # USAGE: cls {DIRECTORYNAME}
-cll() {
+function cll() {
     if [ $# -lt 1 ];
     then
         echo 'USAGE: cls {DIRECTORYNAME}';
@@ -99,7 +169,7 @@ cll() {
 
 # Sort by size
 # USAGE: sbs
-sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e';}
+function sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e';}
 
 
 #================================#
@@ -108,7 +178,7 @@ sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s",
 
 # create directory and cd into it, also creates parent directories
 # USAGE: mcd {DIRECTORYNAME}
-mcd() {
+function mcd() {
     if [ $# -lt 1 ];
     then
         echo 'USAGE: mcd {DIRECTORYNAME}';
@@ -120,20 +190,41 @@ mcd() {
 
 # make backup of file
 # USAGE: backup {FILENAME} {ENDING}
-backup() {
+function backup() {
     if [ $# -lt 2 ];
     then
         if [ $# -lt 1 ];
         then
             echo 'USAGE: backup {FILENAME} {ENDING}';
         else
-            cp "$1"{,.bak};
+            cp -a "$1" "${1}_$(date --iso-8601=seconds)"
         fi
     else
         cp "$1"{,."$2"};
     fi
 }
 
+# print the last ten modified files in the specified directory
+# USAGE: lastmod {DIRECTORY}
+function lastmod() {
+    if [ $# -lt 1 ];
+    then
+        ls -lt ./ | head;
+    else
+        ls -lt $1 | head;
+    fi
+}
+
+# copy a file to the clipboard from the command line (requires xclip to be installed)
+# USAGE copyfile {FILENAME}
+function copyfile() {
+    if [ $# -lt 1 ];
+    then
+        echo 'USAGE copyfile {FILENAME}';
+    else
+        cat $1 | xclip -selection clipboard;
+    fi
+}
 
 #==============#
 #   archives   #
@@ -141,7 +232,7 @@ backup() {
 
 # extract any kind of archive
 # USAGE: extract {FILENAME}
-extract() {
+function extract() {
     if [ $# -lt 1 ];
     then
         echo 'USAGE: extract {FILENAME}';
@@ -197,8 +288,8 @@ extract() {
 #===============#
 
 # generate strong password
-# USAGE: genpass {LENGTH}
-genpass() {
+# USAGE: passgen {LENGTH}
+function passgen() {
     if [ $# -lt 1 ];
     then
         strings /dev/urandom | grep -o '[[:alnum:][:punct:]]' | head -n 30 | tr -d '\n';
@@ -207,9 +298,22 @@ genpass() {
     fi
     echo;
 }
+alias genpass='passgen'
 
 # shows uptime using a shorter formula
-myuptime () {
-  uptime | awk '{ print "Uptime:", $3, $4, $5 }' | sed 's/,//g';
-  return;
+function myuptime() {
+    uptime | awk '{ print "Uptime:", $3, $4, $5 }' | sed 's/,//g';
+    return;
 }
+
+# google for specified term in default browser
+function google() {
+    xdg-open "https://www.google.com/search?q=`urlencode "${(j: :)@}"`";
+}
+
+# launch an app
+function launch() {
+	type $1 >/dev/null || { print "$1 not found" && return 1 }
+	$@ &>/dev/null &|
+}
+alias launch="launch " # expand aliases

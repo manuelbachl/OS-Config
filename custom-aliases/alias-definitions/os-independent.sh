@@ -14,9 +14,13 @@ alias zshrc="sedit ~/.zshrc"
 
 # reload your zsh config
 alias src="source ~/.zshrc"
+alias reload='src'
 
 # clear terminal
 alias c='clear'
+
+# show history
+alias h='history'
 
 # set nano as default editor
 alias n='nano'
@@ -24,13 +28,24 @@ alias sn='sudo nano'
 alias edit='nano'
 alias sedit='sudo nano'
 
+# aliases for exit
+alias q='exit'
+alias quit='exit'
+
+
+#====================#
+#   system-related   #
+#====================#
+
+# show disk space statistics human readable
+alias df='df -h'
+
+# reboot system
+alias reboot='sudo reboot'
 
 #=================#
 #   web-related   #
 #=================#
-
-# get xour public IP-address
-alias ipinfo="curl ifconfig.me"
 
 # stop after sending count ECHO_REQUEST packets
 alias ping='ping -c 5'
@@ -47,6 +62,8 @@ alias headerc='curl -I --compress'
 # resume wget by default
 alias wget='wget -c'
 
+# show all used ports
+alias ports='netstat -tulanp'
 
 #================#
 #   navigation   #
@@ -68,7 +85,7 @@ alias .7='cd ../../../../../../..'
 alias .8='cd ../../../../../../../..'
 alias .9='cd ../../../../../../../../..'
 
-# copy the current working directory to the clipboard
+# copy the current working directory to the clipboard (requires xclip to be installed)
 alias cpwd='pwd | xclip -selection clipboard'
 
 
@@ -126,3 +143,23 @@ alias ax="chmod a+x"
 # give a file execute permissions or just read and write
 alias chx='chmod 755'
 alias chr='chmod 644'
+
+
+#====================#
+#   key-management   #
+#====================#
+
+# generate public-keypair
+alias genpub='ssh-keygen -t rsa -b 4096'
+
+# show public key
+alias spubkey='cat ~/.ssh/id_rsa.pub'
+
+# copy public key to clipboard (requires xclip to be installed)
+alias cpubkey='spubkey | xclip -selection clipboard'
+
+# show private key
+alias sprivkey='cat ~/.ssh/id_rsa'
+
+# copy public key to clipboard (requires xclip to be installed)
+alias cprivkey='sprivkey | xclip -selection clipboard'
