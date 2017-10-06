@@ -3,6 +3,11 @@
   <component name="issues">
     <option name="index">
       <map>
+        <entry key="$PROJECT_DIR$/.gitignore">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/.shell_aliases.sh">
           <value>
             <set />
@@ -34,6 +39,46 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/aliases/os_independent.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/custom-aliases/alias-definitions/functions.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/custom-aliases/config.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/custom-aliases/example.config.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cutsom-aliases/alias-definitions/functions.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cutsom-aliases/alias-definitions/os-dependent.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cutsom-aliases/alias-definitions/os-independent.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cutsom-aliases/aliases.sh">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cutsom-aliases/confi.sh">
           <value>
             <set />
           </value>

@@ -9,4 +9,4 @@
 #==============================#
 
 #google api key for url-shortener
-configGoogleApiKey='AIzaSyB28HTd4x3VREDJUlsKFfVoADSVw2FJpdU'
+declare configGoogleApiKey=''
