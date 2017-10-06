@@ -84,11 +84,11 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-####################
-### Custom Stuff ###
-####################
 
-### Aliases
+
+############################
+### OS-dependent Aliases ###
+############################
 
 # Get os name via uname
 _myos="$(uname)"
@@ -109,79 +109,86 @@ case $_myos in
         alias chrome="open -a \"Google Chrome\""
         ;;
     *)
-        # go to users home directory
-        alias home='cd $HOME'
-
-        # clear terminal
-        alias c='clear'
-
-        # add extra protection against mistakes
-        alias rm='rm -I'
-
-        # get rid of command not found
-        alias cd..='cd ..'
-
-        # a quick way to get out of current directory
-        alias ..='cd ..'
-        alias ...='cd ../../..'
-        alias ....='cd ../../../..'
-        alias .....='cd ../../../../..'
-        alias .2='cd ../..'
-        alias .3='cd ../../..'
-        alias .4='cd ../../../..'
-        alias .5='cd ../../../../..'
-
-        # use a long listing format
-        alias ll='ls -la'
-
-        # show hidden files
-        alias l.='ls -lad .* --color=auto'
-
-        # group directories first
-        alias lsa='ls -lAhF --group-directories-first'
-
-        # create parent directories on demand
-        alias mkdir='mkdir -pv'
-
-        # set nano as default
-        alias n='nano'
-        alias sn='sudo nano'
-        alias edit='nano'
-        alias sedit='sudo nano'
-
-        # stop after sending count ECHO_REQUEST packets
-        alias ping='ping -c 5'
-
-        # do not wait interval 1 second, go fast
-        alias fastping='ping -c 100 -s.2'
-
-        # get web server headers
-        alias header='curl -I'
-
-        # find out if remote server supports gzip / mod_deflate or not
-        alias headerc='curl -I --compress'
-
-        # resume wget by default
-        alias wget='wget -c'
-
-        # display the directory structure recursively in a tree format
-        alias tree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
-
-        # get xour public IP-address
-        alias ipinfo="curl ifconfig.me"
-
-        # make executable
-        alias ax="chmod a+x"
-
-        # edit .zshrc
-        alias zshrc="sedit ~/.zshrc"
-
-        # reload your zsh config
-        alias src="source ~/.zshrc"
         ;;
 esac
 
-### Helper functions
+##############################
+### OS-independent aliases ###
+##############################
+
+# go to users home directory
+alias home='cd $HOME'
+
+# clear terminal
+alias c='clear'
+
+# add extra protection against mistakes
+alias rm='rm -I'
+
+# get rid of command not found
+alias cd..='cd ..'
+
+# a quick way to get out of current directory
+alias ..='cd ..'
+alias ...='cd ../../..'
+alias ....='cd ../../../..'
+alias .....='cd ../../../../..'
+alias .2='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+
+# use a long listing format
+alias ll='ls -la'
+
+# show hidden files
+alias l.='ls -lad .* --color=auto'
+
+# group directories first
+alias lsa='ls -lAhF --group-directories-first'
+
+# create parent directories on demand
+alias mkdir='mkdir -pv'
+
+# set nano as default
+alias n='nano'
+alias sn='sudo nano'
+alias edit='nano'
+alias sedit='sudo nano'
+
+# stop after sending count ECHO_REQUEST packets
+alias ping='ping -c 5'
+
+# do not wait interval 1 second, go fast
+alias fastping='ping -c 100 -s.2'
+
+# get web server headers
+alias header='curl -I'
+
+# find out if remote server supports gzip / mod_deflate or not
+alias headerc='curl -I --compress'
+
+# resume wget by default
+alias wget='wget -c'
+
+# display the directory structure recursively in a tree format
+alias tree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
+
+# get xour public IP-address
+alias ipinfo="curl ifconfig.me"
+
+# make executable
+alias ax="chmod a+x"
+
+# edit .zshrc
+alias zshrc="sedit ~/.zshrc"
+
+# reload your zsh config
+alias src="source ~/.zshrc"
+
+########################
+### Helper functions ###
+########################
 
 # find what is using a particular port
 # USAGE: whoisport 80
