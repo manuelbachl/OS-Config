@@ -186,6 +186,12 @@ alias src="source ~/.zshrc"
 ### Helper functions ###
 ########################
 
+# convert string to int
+function toint {
+    local -i num="10#${1}"
+    echo "${num}"
+}
+
 # find what is using a particular port
 # USAGE: whoisport 80
 function whoisport() {
@@ -194,14 +200,23 @@ function whoisport() {
         echo 'USAGE: whoisport {PORTNUMBER}';
     else
         port=$1;
-        pidInfo=$(sudo fuser $port/tcp 2> /dev/null);
-        if [[ ! -z $pidInfo ]];
+        local -i portNum=$(toint "${port}" 2>/dev/null);
+        if (( $portNum < 1 || $portNum > 65535 ));
         then
-            pidInfoClean="$(echo -e $pidInfo | tr -d '[:space:]')"
-            pid=$(echo $pidInfoClean | cut -d':' -f2);
-            sudo ls -l /proc/$pid/exe;
+            echo $port' is not a valid port (must be an integer between 1 and 65535)';
         else
-            echo 'port '$port' is not in use';
+            pidInfo=$(sudo fuser $port/tcp 2> /dev/null);
+            if [[ ! -z $pidInfo ]];
+            then
+                pidInfoClean="$(echo -e $pidInfo | tr -d '[:space:]')"
+                pid=$(echo $pidInfoClean | cut -d':' -f2);
+                sudo ls -l /proc/$pid/exe;
+            else
+                if ! lsof -i:$port
+                then
+                    echo 'port '$port' is not in use';
+                fi
+            fi
         fi
     fi
 }
