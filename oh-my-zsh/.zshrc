@@ -129,10 +129,6 @@ alias rm='rm -I'
 alias cd..='cd ..'
 
 # a quick way to get out of current directory
-alias ..='cd ..'
-alias ...='cd ../../..'
-alias ....='cd ../../../..'
-alias .....='cd ../../../../..'
 alias .2='cd ../..'
 alias .3='cd ../../..'
 alias .4='cd ../../../..'
@@ -197,10 +193,16 @@ function whoisport() {
     then
         echo 'USAGE: whoisport {PORTNUMBER}';
     else
-        port=$1
-        pidInfo=$(fuser $port/tcp 2> /dev/null)
-        pid=$(echo $pidInfo | cut -d':' -f2)
-        ls -l /proc/$pid/exe
+        port=$1;
+        pidInfo=$(sudo fuser $port/tcp 2> /dev/null);
+        if [[ ! -z $pidInfo ]];
+        then
+            pidInfoClean="$(echo -e $pidInfo | tr -d '[:space:]')"
+            pid=$(echo $pidInfoClean | cut -d':' -f2);
+            sudo ls -l /proc/$pid/exe;
+        else
+            echo 'port '$port' is not in use';
+        fi
     fi
 }
 
@@ -333,7 +335,6 @@ extract() {
 # Sort by size
 # USAGE: sbs
 sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e';}
-
 
 # generate strong password
 # USAGE: genpass {LENGTH}
