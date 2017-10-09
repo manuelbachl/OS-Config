@@ -4,9 +4,11 @@
 To activate the aliases and functions in this package, copy the directory `custom-aliases` into your home directory (e.g. `~/` or `/home/username/`).
 After that, you need to add the following line to the end of your `~/.zshrc` or `~/.bashrc`:
 
-`source $HOME/custom-aliases/aliases.sh`
+```
+source $HOME/custom-aliases/aliases.sh
+```
 
-Reload your bash- or zsh-profile (`$ source ~/.zshrc` or `$ source ~/.bashrc`) or restart your terminal.
+Reload your bash- or zsh-profile or restart your terminal.
 
 ### Configuration
 It is neccessary to copy the file `custom-aliases/example.config.sh` to `custom-aliases/config.sh`, even, when you don't set any values.
