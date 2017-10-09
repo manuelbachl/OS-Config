@@ -115,4 +115,5 @@ crashlytics-build.properties
 fabric.properties
 
 ## Project
+.idea/
 custom-aliases/config.sh
