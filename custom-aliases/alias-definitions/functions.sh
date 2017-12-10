@@ -358,3 +358,9 @@ function addHost() {
     fi
 }
 alias addhost="addHost " # expand aliases
+
+function sshDevil() {
+    cd $HOME/Projekte/devilbox;
+    ./shell.sh;
+}
+alias sshdevil="sshDevil " # expand aliases
