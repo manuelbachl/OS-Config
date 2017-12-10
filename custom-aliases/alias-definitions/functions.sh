@@ -9,7 +9,7 @@
 #   shell/terminal   #
 #====================#
 
-# print a separator banner, as wide as the terminal
+# print a separator line, as wide as the terminal
 function hr() {
     print ${(l:COLUMNS::=:)}
 }
@@ -29,7 +29,7 @@ function urlencode() {
     echo -e $(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$1");
 }
 
-# create short urls via http://goo.gl using curl(1)
+# create short urls via http://goo.gl using curl
 function zurl() {
     if [[ -z $1 ]];
     then
@@ -70,7 +70,7 @@ function zurl() {
 #=================#
 
 # find what is using a particular port
-# USAGE: whoisport 80
+# USAGE: whoisport {PORTNUMBER}
 function whoisport() {
     if [ $# -lt 1 ];
     then
@@ -150,7 +150,7 @@ function cls() {
     fi
 }
 
-# cd into directory and list contents (detailed
+# cd into directory and list contents (detailed)
 # USAGE: cls {DIRECTORYNAME}
 function cll() {
     if [ $# -lt 1 ];
@@ -167,7 +167,7 @@ function cll() {
 #   list files/directories   #
 #============================#
 
-# Sort by size
+# sort directory content by size
 # USAGE: sbs
 function sbs() { du -b --max-depth 1 | sort -nr | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e';}
 
@@ -287,12 +287,12 @@ function extract() {
 #   utilities   #
 #===============#
 
-# generate strong password
+# generate strong password with given length. If no length is set, the password will have 20 chars
 # USAGE: passgen {LENGTH}
 function passgen() {
     if [ $# -lt 1 ];
     then
-        strings /dev/urandom | grep -o '[[:alnum:][:punct:]]' | head -n 30 | tr -d '\n';
+        strings /dev/urandom | grep -o '[[:alnum:][:punct:]]' | head -n 20 | tr -d '\n';
     else
         strings /dev/urandom | grep -o '[[:alnum:][:punct:]]' | head -n "$1" | tr -d '\n';
     fi
@@ -317,3 +317,44 @@ function launch() {
 	$@ &>/dev/null &|
 }
 alias launch="launch " # expand aliases
+
+
+#===========#
+#  Devibox  #
+#===========#
+
+# end services listening on :80 and :3306
+# start devilbox
+function startDevilbox() {
+    sudo lsof -t -i tcp:80 -s tcp:listen | sudo xargs kill;
+    sudo lsof -t -i tcp:3306 -s tcp:listen | sudo xargs kill;
+    cd $HOME/Projekte/devilbox;
+    docker-compose up -d;
+    cd www;
+}
+alias devil="startDevilbox " # expand aliases
+
+# end services listening on :80 and :3306
+# start devilbox
+function restartDevilbox() {
+    cd $HOME/Projekte/devilbox;
+    docker-compose stop;
+    docker-compose kill;
+    docker-compose rm -f;
+    docker-compose up -d;
+    cd www;
+}
+alias redevil="restartDevilbox " # expand aliases
+
+# end services listening on :80 and :3306
+# start devilbox
+function addHost() {
+    if [ $# -lt 1 ];
+    then
+        echo 'USAGE: addhost {hostname} (without .loc)';
+    else
+        sudo echo '127.0.0.1 '$1'.loc' >> /etc/hosts;
+        sudo service networking restart;
+    fi
+}
+alias addhost="addHost " # expand aliases

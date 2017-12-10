@@ -9,8 +9,17 @@
 #   shell/terminal   #
 #====================#
 
+# set nano as default editor
+alias n='nano'
+alias sn='sudo nano'
+alias edit='nano'
+alias sedit='sudo nano'
+
 # edit .zshrc
 alias zshrc="sedit ~/.zshrc"
+
+# edit .bashrc
+alias bashrc="sedit ~/.bashrc"
 
 # reload your zsh config
 alias src="source ~/.zshrc"
@@ -22,12 +31,6 @@ alias c='clear'
 # show history
 alias h='history'
 
-# set nano as default editor
-alias n='nano'
-alias sn='sudo nano'
-alias edit='nano'
-alias sedit='sudo nano'
-
 # aliases for exit
 alias q='exit'
 alias quit='exit'
@@ -37,10 +40,10 @@ alias quit='exit'
 #   system-related   #
 #====================#
 
-# show disk space statistics human readable
+# show human readable disk space statistics
 alias df='df -h'
 
-# reboot system
+# force sudo on reboot
 alias reboot='sudo reboot'
 
 #=================#
@@ -50,8 +53,8 @@ alias reboot='sudo reboot'
 # stop after sending count ECHO_REQUEST packets
 alias ping='ping -c 5'
 
-# do not wait interval 1 second, go fast
-alias fastping='ping -c 100 -s.2'
+# do not wait interval 1 second on ping
+alias fastping='ping -c 10 -s.2'
 
 # get web server headers
 alias header='curl -I'
@@ -76,6 +79,13 @@ alias home='cd $HOME'
 alias cd..='cd ..'
 
 # a quick way to get out of current directory
+alias ...='cd ../../..'
+alias ....='cd ../../../..'
+alias .....='cd ../../../../..'
+alias ......='cd ../../../../../..'
+alias .......='cd ../../../../../../..'
+alias ........='cd ../../../../../../../..'
+alias .........='cd ../../../../../../../../..'
 alias .2='cd ../..'
 alias .3='cd ../../..'
 alias .4='cd ../../../..'
@@ -87,15 +97,6 @@ alias .9='cd ../../../../../../../../..'
 
 # copy the current working directory to the clipboard (requires xclip to be installed)
 alias cpwd='pwd | xclip -selection clipboard'
-
-
-#============#
-#   search   #
-#============#
-
-# quickly find files and directory
-alias ff='find . -type f -name'
-alias fd='find . -type d -name'
 
 
 #============================#
@@ -118,9 +119,9 @@ alias lsa='ls -lAhF --group-directories-first'
 alias tree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 
 
-#================================#
-#   file/directory manipulaion   #
-#================================#
+#=================================#
+#   file/directory manipulation   #
+#=================================#
 
 # create parent directories on demand
 alias mkdir='mkdir -pv'
@@ -137,11 +138,13 @@ alias mv='mv -i'
 #   file permissions   #
 #======================#
 
-# make executable
+# make file executable
 alias ax="chmod a+x"
 
-# give a file execute permissions or just read and write
+# give a file execute permissions
 alias chx='chmod 755'
+
+# give a file just read and write permissions
 alias chr='chmod 644'
 
 
@@ -154,12 +157,16 @@ alias genpub='ssh-keygen -t rsa -b 4096'
 
 # show public key
 alias spubkey='cat ~/.ssh/id_rsa.pub'
+alias showpubkey='spubkey'
 
 # copy public key to clipboard (requires xclip to be installed)
 alias cpubkey='spubkey | xclip -selection clipboard'
+alias copypubkey='cpubkey'
 
 # show private key
 alias sprivkey='cat ~/.ssh/id_rsa'
+alias showprivkey='sprivkey'
 
 # copy public key to clipboard (requires xclip to be installed)
 alias cprivkey='sprivkey | xclip -selection clipboard'
+alias copyprivkey='cprivkey'
